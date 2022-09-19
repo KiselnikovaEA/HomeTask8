@@ -2,7 +2,7 @@
 
 namespace HomeTasks_KisEA
 {
-    class Program       // Программа упорядочивает все строки двумерного массива по убыванию значения элементов
+    class Program       // Программа находит номер строки с наименьшей суммой элементов
     {
         static void Main (string[] args)
         {
@@ -34,26 +34,26 @@ namespace HomeTasks_KisEA
                 Console.WriteLine();
             }
 
-            int[,] sortMatrixLines(int[,] Matrix)
+            int findMinSumLine(int[,] Matrix)
             {
-                int maxind, buff;
+                int[] sumLines = new int[Matrix.GetLength(0)];              // создаю одномерный массив по количестку строк, чтоб считать сюда сумму элементов в строках
+
                 for(int i = 0; i < Matrix.GetLength(0); i++)
                 {
-
+                    sumLines[i] = 0;
                     for(int j = 0; j < Matrix.GetLength(1); j++)
                     {
-                        maxind = j;
-                        for(int k = j; k < Matrix.GetLength(1); k++)
-                        {
-                            if(Matrix[i,k] > Matrix[i,maxind]) maxind = k;
-                        }
-                        buff = Matrix[i,j];
-                        Matrix[i,j] = Matrix[i,maxind];
-                        Matrix[i,maxind] = buff;
-                    }                                   
-
+                        sumLines[i] = sumLines[i] + Matrix[i,j];
+                    }
                 }
-                return Matrix;
+                for(int i = 0; i < sumLines.Length; i++) {Console.WriteLine($"{i+1}-я строка: {sumLines[i]} ");}
+                Console.WriteLine();
+                int minElement = 0;
+                for(int i = 1; i < sumLines.Length; i++)
+                {
+                    if(sumLines[i] < sumLines[minElement]) minElement = i; 
+                }
+                return minElement + 1;
             }
 
             Console.WriteLine("Создание двумерного массива.");
@@ -64,9 +64,7 @@ namespace HomeTasks_KisEA
 
             int[,] Massive = createMatrix(n,m);
             printMatrix(Massive);
-            Massive = sortMatrixLines(Massive);
-            printMatrix(Massive);
-
+            Console.WriteLine($"В {findMinSumLine(Massive)}-й строке наименьшая сумма элементов");
 
         }
     }
